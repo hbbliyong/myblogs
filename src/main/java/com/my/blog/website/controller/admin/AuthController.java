@@ -10,7 +10,11 @@ import com.my.blog.website.service.ILogService;
 import com.my.blog.website.service.IUserService;
 import com.my.blog.website.utils.Commons;
 import com.my.blog.website.utils.TaleUtils;
-import org.apache.catalina.servlet4preview.http.HttpServletRequest;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -28,6 +33,7 @@ import java.io.IOException;
  * 用户后台登录/登出
  * Created by BlueT on 2017/3/11.
  */
+@Api("用户后台登录/登出")
 @Controller
 @RequestMapping("/admin")
 @Transactional(rollbackFor = TipException.class)
@@ -55,8 +61,15 @@ public class AuthController extends BaseController {
      * @param response
      * @return
      */
+
     @PostMapping(value = "login")
     @ResponseBody
+    @ApiOperation(value = "用户登录",notes = "根据用户名密码登录")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query",name = "username",value = "用户名",required = true,dataType = "String"),
+            @ApiImplicitParam(paramType = "query",name = "password",value = "密码",required = true,dataType = "String"),
+            @ApiImplicitParam(paramType = "query",name = "remeber_me",value = "记住我",required = false,dataType = "String")
+    } )
     public RestResponseBo doLogin(@RequestParam String username,
                                   @RequestParam String password,
                                   @RequestParam(required = false) String remeber_me,
