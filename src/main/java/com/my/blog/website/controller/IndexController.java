@@ -39,7 +39,8 @@ import java.util.List;
  * 首页
  * Created by Administrator on 2017/3/8 008.
  */
-@Controller
+@RestController
+@RequestMapping("/index")
 public class IndexController extends BaseController {
     private static final Logger LOGGER = LoggerFactory.getLogger(IndexController.class);
 
@@ -61,47 +62,37 @@ public class IndexController extends BaseController {
      * @return
      */
     @GetMapping(value = {"/", "index"})
-    public String index(HttpServletRequest request, @RequestParam(value = "limit", defaultValue = "12") int limit) {
-        return this.index(request, 1, limit);
+    public PageInfo<ContentVo> index( @RequestParam(value = "limit", defaultValue = "12") int limit) {
+        return this.index( 1, limit);
     }
 
     /**
      * 首页分页
      *
-     * @param request request
      * @param p       第几页
      * @param limit   每页大小
      * @return 主页
      */
     @GetMapping(value = "page/{p}")
-    public String index(HttpServletRequest request, @PathVariable int p, @RequestParam(value = "limit", defaultValue = "12") int limit) {
+    public PageInfo<ContentVo> index( @PathVariable int p, @RequestParam(value = "limit", defaultValue = "12") int limit) {
         p = p < 0 || p > WebConst.MAX_PAGE ? 1 : p;
         PageInfo<ContentVo> articles = contentService.getContents(p, limit);
-        request.setAttribute("articles", articles);
-        if (p > 1) {
-            this.title(request, "第" + p + "页");
-        }
-        return this.render("index");
+        return  articles;
     }
 
     /**
      * 文章页
      *
-     * @param request 请求
      * @param cid     文章主键
      * @return
      */
     @GetMapping(value = {"article/{cid}", "article/{cid}.html"})
-    public String getArticle(HttpServletRequest request, @PathVariable String cid) {
+    public ContentVo getArticle( @PathVariable String cid) {
         ContentVo contents = contentService.getContents(cid);
-        if (null == contents || "draft".equals(contents.getStatus())) {
-            return this.render_404();
-        }
-        request.setAttribute("article", contents);
-        request.setAttribute("is_post", true);
-        completeArticle(request, contents);
-        updateArticleHit(contents.getCid(), contents.getHits());
-        return this.render("post");
+//        if (null == contents || "draft".equals(contents.getStatus())) {
+//            return this.render_404();
+//        }
+        return contents;
     }
 
     /**
