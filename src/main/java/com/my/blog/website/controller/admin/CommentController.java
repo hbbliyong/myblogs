@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Created by 13 on 2017/2/26.
  */
-@Controller
+@RestController
 @RequestMapping("admin/comments")
 public class CommentController extends BaseController {
 
@@ -57,7 +57,6 @@ public class CommentController extends BaseController {
      * @return
      */
     @PostMapping(value = "delete")
-    @ResponseBody
     @Transactional(rollbackFor = TipException.class)
     public  RestResponseBo delete(@RequestParam Integer coid) {
         try {
@@ -79,7 +78,6 @@ public class CommentController extends BaseController {
     }
 
     @PostMapping(value = "status")
-    @ResponseBody
     @Transactional(rollbackFor = TipException.class)
     public RestResponseBo delete(@RequestParam Integer coid, @RequestParam String status) {
         try {
@@ -107,7 +105,6 @@ public class CommentController extends BaseController {
      * @return
      */
     @PostMapping(value = "")
-    @ResponseBody
     @Transactional(rollbackFor = TipException.class)
     public RestResponseBo reply(@RequestParam Integer coid, @RequestParam String content, HttpServletRequest request) {
         if(null == coid || StringUtils.isBlank(content)){

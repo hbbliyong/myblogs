@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Created by 13 on 2017/2/21.
  */
-@Controller()
+@RestController()
 @RequestMapping("admin/page")
 public class PageController extends BaseController {
 
@@ -37,29 +37,26 @@ public class PageController extends BaseController {
     private ILogService logService;
 
     @GetMapping(value = "")
-    public String index(HttpServletRequest request) {
+    public  PageInfo<ContentVo> index() {
         ContentVoExample contentVoExample = new ContentVoExample();
         contentVoExample.setOrderByClause("created desc");
         contentVoExample.createCriteria().andTypeEqualTo(Types.PAGE.getType());
         PageInfo<ContentVo> contentsPaginator = contentsService.getArticlesWithpage(contentVoExample, 1, WebConst.MAX_POSTS);
-        request.setAttribute("articles", contentsPaginator);
-        return "admin/page_list";
+        return contentsPaginator;
     }
 
-    @GetMapping(value = "new")
-    public String newPage(HttpServletRequest request) {
-        return "admin/page_edit";
-    }
+//    @GetMapping(value = "new")
+//    public String newPage(HttpServletRequest request) {
+//        return "admin/page_edit";
+//    }
 
     @GetMapping(value = "/{cid}")
-    public String editPage(@PathVariable String cid, HttpServletRequest request) {
+    public ContentVo editPage(@PathVariable String cid, HttpServletRequest request) {
         ContentVo contents = contentsService.getContents(cid);
-        request.setAttribute("contents", contents);
-        return "admin/page_edit";
+       return  contents;
     }
 
     @PostMapping(value = "publish")
-    @ResponseBody
     @Transactional(rollbackFor = TipException.class)
     public RestResponseBo publishPage(@RequestParam String title, @RequestParam String content,
                                       @RequestParam String status, @RequestParam String slug,
@@ -95,7 +92,6 @@ public class PageController extends BaseController {
     }
 
     @PostMapping(value = "modify")
-    @ResponseBody
     @Transactional(rollbackFor = TipException.class)
     public RestResponseBo modifyArticle(@RequestParam Integer cid, @RequestParam String title,
                                         @RequestParam String content,
@@ -132,7 +128,6 @@ public class PageController extends BaseController {
     }
 
     @RequestMapping(value = "delete")
-    @ResponseBody
     @Transactional(rollbackFor = TipException.class)
     public RestResponseBo delete(@RequestParam int cid, HttpServletRequest request) {
         try {

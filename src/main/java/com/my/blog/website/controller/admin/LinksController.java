@@ -34,14 +34,12 @@ public class LinksController extends BaseController {
      * @return
      */
     @GetMapping(value = "")
-    public String index(HttpServletRequest request) {
+    public List<MetaVo> index(HttpServletRequest request) {
         List<MetaVo> metas = metasService.getMetas(Types.LINK.getType());
-        request.setAttribute("links", metas);
-        return "admin/links";
+        return metas;
     }
 
     @PostMapping(value = "save")
-    @ResponseBody
     @Transactional(rollbackFor = TipException.class)
     public RestResponseBo saveLink(@RequestParam String title, @RequestParam String url,
                                    @RequestParam String logo, @RequestParam Integer mid,
@@ -72,7 +70,6 @@ public class LinksController extends BaseController {
     }
 
     @RequestMapping(value = "delete")
-    @ResponseBody
     @Transactional(rollbackFor = TipException.class)
     public RestResponseBo delete(@RequestParam int mid) {
         try {
@@ -88,5 +85,4 @@ public class LinksController extends BaseController {
         }
         return RestResponseBo.ok();
     }
-
 }

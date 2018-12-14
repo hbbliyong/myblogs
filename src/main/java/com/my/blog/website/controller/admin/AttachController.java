@@ -34,7 +34,7 @@ import java.util.List;
  *
  * Created by 13 on 2017/2/21.
  */
-@Controller
+@RestController
 @RequestMapping("admin/attach")
 public class AttachController extends BaseController {
 
@@ -109,7 +109,6 @@ public class AttachController extends BaseController {
      * @return
      */
     @RequestMapping(value = "delete")
-    @ResponseBody
     @Transactional(rollbackFor = TipException.class)
     public RestResponseBo delete(@RequestParam Integer id, HttpServletRequest request) {
         try {

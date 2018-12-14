@@ -34,7 +34,7 @@ import java.io.IOException;
  * Created by BlueT on 2017/3/11.
  */
 @Api("用户后台登录/登出")
-@Controller
+@RestController
 @RequestMapping("/admin")
 @Transactional(rollbackFor = TipException.class)
 public class AuthController extends BaseController {
@@ -47,10 +47,10 @@ public class AuthController extends BaseController {
     @Resource
     private ILogService logService;
 
-    @GetMapping(value = "/login")
-    public String login() {
-        return "admin/login";
-    }
+//    @GetMapping(value = "/login")
+//    public String login() {
+//        return "admin/login";
+//    }
 
     /**
      * 管理后台登录
@@ -63,7 +63,6 @@ public class AuthController extends BaseController {
      */
 
     @PostMapping(value = "login")
-    @ResponseBody
     @ApiOperation(value = "用户登录",notes = "根据用户名密码登录")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query",name = "username",value = "用户名",required = true,dataType = "String"),
@@ -106,7 +105,7 @@ public class AuthController extends BaseController {
      * @param session
      * @param response
      */
-    @RequestMapping("/logout")
+    @GetMapping("/logout")
     public void logout(HttpSession session, HttpServletResponse response, HttpServletRequest request) {
         session.removeAttribute(WebConst.LOGIN_SESSION_KEY);
         Cookie cookie = new Cookie(WebConst.USER_IN_COOKIE, "");

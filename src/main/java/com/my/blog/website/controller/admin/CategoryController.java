@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * Created by 13 on 2017/2/21.
  */
-@Controller
+@RestController
 @RequestMapping("admin/category")
 public class CategoryController extends BaseController {
 
@@ -67,7 +67,6 @@ public class CategoryController extends BaseController {
      * @return
      */
     @RequestMapping(value = "delete")
-    @ResponseBody
     @Transactional(rollbackFor = TipException.class)
     public RestResponseBo delete(@RequestParam int mid) {
         try {
@@ -83,5 +82,4 @@ public class CategoryController extends BaseController {
         }
         return RestResponseBo.ok();
     }
-
 }

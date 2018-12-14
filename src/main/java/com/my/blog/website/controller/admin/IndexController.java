@@ -31,7 +31,7 @@ import java.util.List;
  * 后台管理首页
  * Created by Administrator on 2017/3/9 009.
  */
-@Controller("adminIndexController")
+@RestController("adminIndexController")
 @RequestMapping("/admin")
 @Transactional(rollbackFor = TipException.class)
 public class IndexController extends BaseController {
@@ -70,20 +70,20 @@ public class IndexController extends BaseController {
     /**
      * 个人设置页面
      */
-    @GetMapping(value = "profile")
-    public String profile() {
-        return "admin/profile";
-    }
+   // @GetMapping(value = "profile")
+   // public String profile() {
+       // return "admin/profile";
+   // }
 
     /**
      * admin 退出登录
      * @return
      */
-    @GetMapping(value = "logout")
-    public String logout() {
-        System.out.println("index-----------logout");
-        return "admin/login";
-    }
+//    @GetMapping(value = "logout")
+//    public String logout() {
+//        System.out.println("index-----------logout");
+//        return "admin/login";
+//    }
 
 
     /**

@@ -45,14 +45,13 @@ public class SettingController extends BaseController {
      * 系统设置
      */
     @GetMapping(value = "")
-    public String setting(HttpServletRequest request) {
+    public Map<String, String> setting(HttpServletRequest request) {
         List<OptionVo> voList = optionService.getOptions();
         Map<String, String> options = new HashMap<>();
         voList.forEach((option) -> {
             options.put(option.getName(), option.getValue());
         });
-        request.setAttribute("options", options);
-        return "admin/setting";
+        return  options;
     }
 
     /**
@@ -96,7 +95,6 @@ public class SettingController extends BaseController {
      * @return
      */
     @PostMapping(value = "backup")
-    @ResponseBody
     @Transactional(rollbackFor = TipException.class)
     public RestResponseBo backup(@RequestParam String bk_type, @RequestParam String bk_path,
                                  HttpServletRequest request) {
